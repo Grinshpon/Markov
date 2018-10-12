@@ -13,6 +13,10 @@ At some point, Markov may also serve as the back-end for an eventual visual calc
       7
     >> x/2
       4.5
+    >> f(x) = 3x+4
+      f(x)
+    >> f(6)
+      22
 
 ### Roadmaps 
 
