@@ -18,7 +18,7 @@ contains (m:ain) check = (m `elem` check) && (ain `contains` check)
 
 --toFloat :: String -> Float
 --toFloat x   | x `hasOne` '.' = read x :: Float
---            | otherwise = error "Parse Error: Float Error: Cannot Convert To Number"
+            -- | otherwise = error "Parse Error: Float Error: Cannot Convert To Number"
 
 toFloat :: String -> Float
 toFloat x = read x :: Float
