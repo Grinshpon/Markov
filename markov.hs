@@ -53,4 +53,4 @@ let inp = ">> " --eventually out[0..] stored in list so you can plug in answers
 let out = "= "
 print (lexer "68 * (5+1)-5.5/1")
 print (lexer ":q")
-print (parse (lexer "2*(2+(2+2))"))
+print (parse (lexer "2*((3-4)/(5+6))"))
