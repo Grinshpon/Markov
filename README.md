@@ -1,16 +1,9 @@
 # Markov
 
-A Haskell Powered Symbolic Calculator
+A Haskell Powered Calculator
 
-Markov is currently a work in progress calculator program. It currently has no functionality, but eventually it will be able to perform calculations with algebraic expressions, vectors and matrices, derivatives and integrals. It will be able to store variables, functions, and previous outputs to be used later.
+Markov is currently a work in progress calculator program. It currently has no practical functionality because it is incomplete, but eventually it will be able to perform calculations with algebraic expressions, vectors and matrices, derivatives and integrals. It will be able to store variables and functions.
 At some point, Markov may also serve as the back-end for an eventual visual calculator application.
-
-
-### Program Roadmap:
-
-- [x] Lexer
-- [ ] Parser
-- [ ] Interpreter
 
 ### Example:
 
@@ -20,3 +13,29 @@ At some point, Markov may also serve as the back-end for an eventual visual calc
       7
     >> x/2
       4.5
+
+### Roadmaps 
+
+##### Program Roadmap:
+
+- [x] Lexer
+- [x] Parser
+- [ ] Interpreter/Evaluator
+
+##### Functionality Roadmap
+
+- [ ] Arithmetic
+- [ ] Algebraic Expressions
+- [ ] Storing Variables
+- [ ] Storing Functions
+- [ ] Matrices
+- [ ] Vectors
+- [ ] Basic Trigonometry
+- [ ] Differentiation
+- [ ] Integration
+- [ ] Sum Series
+- [ ] Product Series
+
+### How It Works
+
+W.I.P
