@@ -1,12 +1,13 @@
 -- Markov: Haskell Powered Calculator
 --Daniel Grinshpon
-data Symbol = Add | Sub | Mult | Div | Pow deriving (Show)
+data Symbol = Add | Sub | Mult | Div | Pow deriving (Show,Eq)
 data Container = Bracket | Brace | Paren | EndSub deriving (Show)
 data Name = Quit | Save | Recalc deriving (Show)
+data Id = Number Double | Variable String Double deriving(Show)
 
 data Token = Keysymbol Char | Identifier String | Statement String | Open Container | Close Container deriving (Show) -- value/number
 -- integrals/derivatives/etx will be KEYWORDS
-data Tree = Operator Symbol | Argument Tree | Number Float | Variable String Float | Term [Tree] | Command Name deriving (Show) -- ??? Parser Tree not finalized
+data Tree = Operator Symbol | Argument Tree | Value Id | Term [Tree] | Command Name deriving (Show) -- ??? Parser Tree not finalized
 
 contains :: String -> String -> Bool
 contains _ [] = False
@@ -14,14 +15,14 @@ contains [] _ = True
 contains (m:ain) check = (m `elem` check) && (ain `contains` check)
 
 --hasOne :: String -> Char -> Bool
---hasOne x c = 
+--hasOne x c =
 
---toFloat :: String -> Float
---toFloat x   | x `hasOne` '.' = read x :: Float
-            -- | otherwise = error "Parse Error: Float Error: Cannot Convert To Number"
+--toDouble :: String -> Double
+--toDouble x   | x `hasOne` '.' = read x :: Double
+            -- | otherwise = error "Parse Error: Double Error: Cannot Convert To Number"
 
-toFloat :: String -> Float
-toFloat x = read x :: Float
+toDouble :: String -> Double
+toDouble x = read x :: Double
 
 lexer :: String -> [Token]
 lexer [] = []
@@ -36,7 +37,7 @@ lexer (d:str)   | d `elem` "^*/+-" = (Keysymbol d):(lexer str)
                 | d == ']' = (Close Brace):(lexer str)
                 | d == '}' = (Close Bracket):(lexer str)
                 | otherwise = case lexer str of
-    ((Identifier n):xs) -> (Identifier (d:n)):xs --Will need to differentiate fractions/decimals [55 or 5.55, 5.5.5 returns error] (and variables [x,y,...])
+    ((Identifier n):xs) -> (Identifier (d:n)):xs --Will need to differentiate fractions/decimals [5.5.5 returns error] (and variables [x,y,..])
     xs -> (Identifier [d]):xs
 
 strip :: [Token] -> Int -> [Token]
@@ -62,16 +63,38 @@ parse ((Keysymbol d):tkns)  | d == '+' = (Operator Add):(parse tkns)
                             | d == '*' = (Operator Mult):(parse tkns)
                             | d == '/' = (Operator Div):(parse tkns)
                             | d == '^' = (Operator Pow):(parse tkns)
-parse ((Identifier (x:xs)):tkns)    | (x:xs) `contains` "1234567890." = (Number (toFloat (x:xs))):(parse tkns)
-                                    | not (x `elem` "1234567890.") = (Variable (x:xs) 0.0):(parse tkns)
+parse ((Identifier (x:xs)):tkns)    | (x:xs) `contains` "1234567890." = (Value (Number (toDouble (x:xs)))):(parse tkns)
+                                    | not (x `elem` "1234567890.") = (Value (Variable (x:xs) 0.0)):(parse tkns) -- NO FUNCTIONALITY FOR VARIABLES YET
                                     | otherwise = error "Parse Error: Invalid Identifier"
 --parse ((Identifier x):tkns) = (Variable x 0):(parse tkns) -- NOT COMPLETE: PLACEHOLDER EVAL
 
+-- write preEvaluate to determine whether something is an equation or function or etc.
+
+interpret :: Tree -> Double
+interpret (Value (Number n)) = n
+interpret (Value (Variable x n)) = n -- NO FUNCTIONALITY FOR VARIABLES YET
+interpret (Term t) = evaluate t
+interpret _ = error "Interpret Error: Incomplete Input"
+
+evaluate :: [Tree] -> Double
+evaluate [] = 0 -- should not be matched
+evaluate [t] = interpret t
+evaluate (n:(Operator op):ts)   | op == Add = (interpret n) + (evaluate ts)
+                                | op == Sub = (interpret n) - (evaluate ts)
+                                | op == Mult = (interpret n) * (evaluate ts)
+                                | op == Div = (interpret n) / (evaluate ts)
+                                | op == Pow = (interpret n) ** (evaluate ts)
+evaluate _ = error "Evaluate Error: Incomplete Input"
+
+--output :: a -> String
+output :: String -> String
+output input = show $ evaluate $ parse $ lexer input
+
  --test
 main = do
-let inp = ">> " --eventually out[0..] stored in list so you can plug in answers (Maybe)
-let out = "= "
 print (lexer "68 * (5+1)-5.5/1")
-print (lexer ":q")
+print ""
 print (lexer "2*((3-4)/(5.5+6))")
 print (parse (lexer "2*((3-4)/(5.5+6))"))
+print $ output "2*((3-4)/(5.5+6))"
+print (parse $ lexer ":q")
