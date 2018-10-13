@@ -21,14 +21,16 @@ At some point, Markov may also serve as the back-end for an eventual visual calc
 ### Roadmaps 
 
 ##### Program Roadmap:
+Everything is a Work In Progress, even if checked. A check signifies basic functionality.
 
 - [x] Lexer
 - [x] Parser
-- [ ] Interpreter/Evaluator
+- [x] Interpreter/Evaluator
+- [ ] Read Input and Display Output
 
 ##### Functionality Roadmap
 
-- [ ] Arithmetic
+- [x] Arithmetic
 - [ ] Algebraic Expressions
 - [ ] Storing Variables
 - [ ] Storing Functions
