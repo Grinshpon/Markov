@@ -5,6 +5,8 @@ A Haskell Powered Calculator
 Markov is currently a work in progress calculator program. It currently has no practical functionality because it is incomplete, but eventually it will be able to perform calculations with algebraic expressions, vectors and matrices, derivatives and integrals. It will be able to store variables and functions.
 At some point, Markov may also serve as the back-end for an eventual visual calculator application.
 
+Markov is currently not built to be a serious competitor to other mathematical programs, it is an individual project made for practice and educational purposes. With that in mind, criticisms are welcome, but merges will be denied.
+
 ### Example:
 
     >> 5 * (2+1)
@@ -30,6 +32,8 @@ Everything is a Work In Progress, even if checked. A check signifies basic funct
 
 ##### Functionality Roadmap
 
+- [ ] Command Calls
+- [ ] Error Catching (that won't close program)
 - [x] Arithmetic
 - [ ] Algebraic Expressions
 - [ ] Storing Variables
