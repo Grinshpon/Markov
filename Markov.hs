@@ -85,11 +85,17 @@ interpret _ = error "Interpret Error: Incomplete Input"
 evaluate :: [Tree] -> Double
 evaluate [] = 0 -- should not be matched
 evaluate [t] = interpret t
-evaluate (n:(Operator op):ts)   | op == Add = (interpret n) + (evaluate ts)
-                                | op == Sub = (interpret n) - (evaluate ts)
-                                | op == Mult = (interpret n) * (evaluate ts)
-                                | op == Div = (interpret n) / (evaluate ts)
-                                | op == Pow = (interpret n) ** (evaluate ts)
+evaluate ((Operator op):t:ts)   | op == Add = evaluate $ (Value(Number(0+(interpret t)))):ts
+                                | op == Sub = evaluate $ (Value(Number(0-(interpret t)))):ts
+                                | otherwise = error "Evaluate Error: Incomplete Input"
+evaluate (n:(Operator op):m:(Operator op1):l:ts)    | op1 == Mult = evaluate $ n:(Operator op):(Value (Number ((interpret m) * (interpret l)))):ts
+                                                    | op1 == Div = evaluate $ n:(Operator op):(Value (Number ((interpret m) / (interpret l)))):ts
+                                                    | op1 == Pow = evaluate $ n:(Operator op):(Value (Number ((interpret m) ** (interpret l)))):ts
+evaluate (n:(Operator op):m:ts) | op == Add = evaluate $ (Value (Number ((interpret n) + (interpret m)))):ts
+                                | op == Sub = evaluate $ (Value (Number ((interpret n) - (interpret m)))):ts
+                                | op == Mult = evaluate $ (Value (Number ((interpret n) * (interpret m)))):ts
+                                | op == Div = evaluate $ (Value (Number ((interpret n) / (interpret m)))):ts
+                                | op == Pow = evaluate $ (Value (Number ((interpret n) ** (interpret m)))):ts
 evaluate _ = error "Evaluate Error: Incomplete Input"
 
 --output :: a -> String
